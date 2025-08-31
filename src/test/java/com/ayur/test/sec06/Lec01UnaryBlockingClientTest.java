@@ -4,13 +4,10 @@ import com.ayur.models.sec06.AccountBalance;
 import com.ayur.models.sec06.AllAccountsResponse;
 import com.ayur.models.sec06.BalanceCheckRequest;
 import com.google.protobuf.Empty;
-import org.ayur.sec06.repository.AccountRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class Lec01UnaryBlockingClientTest extends AbstractTest {
 
@@ -19,14 +16,14 @@ public class Lec01UnaryBlockingClientTest extends AbstractTest {
     @Test
     public void getBalanceTest() {
         BalanceCheckRequest request = BalanceCheckRequest.newBuilder().setAccountNumber(1).build();
-        AccountBalance accountBalance = this.blockingStub.getAccountBalance(request);
+        AccountBalance accountBalance = this.bankStub.getAccountBalance(request);
         logger.info("unary balance recieved: {}", accountBalance);
         Assertions.assertEquals(100, accountBalance.getBalance());
     }
 
     @Test
     public void getAllAccountsTest() {
-        AllAccountsResponse response =  this.blockingStub.getAllAccounts(Empty.getDefaultInstance());
+        AllAccountsResponse response =  this.bankStub.getAllAccounts(Empty.getDefaultInstance());
         logger.info("unary all accounts fetched:{}", response);
         Assertions.assertNotNull(response);
         Assertions.assertEquals(10, response.getAccountsCount());

@@ -21,6 +21,17 @@ public class TransferRequestHandler implements StreamObserver<TransferRequest> {
     @Override
     public void onNext(TransferRequest transferRequest) {
         TransferStatus status = this.transfer(transferRequest);
+
+        //only sending response if the status is completed
+//        if (TransferStatus.COMPLETED.equals(status)) {
+//            TransferResponse response = TransferResponse.newBuilder()
+//                    .setFromAccount(this.toAccountBalance(transferRequest.getFromAccount()))
+//                    .setToAccount(this.toAccountBalance(transferRequest.getToAccount()))
+//                    .setStatus(status)
+//                    .build();
+//            this.responseObserver.onNext(response);
+//        }
+
         TransferResponse response = TransferResponse.newBuilder()
                 .setFromAccount(this.toAccountBalance(transferRequest.getFromAccount()))
                 .setToAccount(this.toAccountBalance(transferRequest.getToAccount()))
@@ -46,7 +57,7 @@ public class TransferRequestHandler implements StreamObserver<TransferRequest> {
         int toAccount = request.getToAccount();
         TransferStatus status = TransferStatus.REJECTED;
 
-        if(AccountRepository.getBalance(fromAccount) >= amount && (fromAccount != toAccount)) {
+        if (AccountRepository.getBalance(fromAccount) >= amount && (fromAccount != toAccount)) {
             AccountRepository.deductAmount(fromAccount, amount);
             AccountRepository.addAmount(toAccount, amount);
             status = TransferStatus.COMPLETED;

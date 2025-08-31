@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CountDownLatch;
-
 public class Lec02UnaryAsyncClientTest extends AbstractTest {
 
     private static final Logger log = LoggerFactory.getLogger(Lec02UnaryAsyncClientTest.class);
@@ -20,7 +18,7 @@ public class Lec02UnaryAsyncClientTest extends AbstractTest {
     public void getBalanceTest() {
         BalanceCheckRequest request = BalanceCheckRequest.newBuilder().setAccountNumber(1).build();
         ResponseObserver<AccountBalance> responseObserver = ResponseObserver.create();
-        this.asyncStub.getAccountBalance(request, responseObserver);
+        this.asyncBankStub.getAccountBalance(request, responseObserver);
         responseObserver.await();
         Assertions.assertEquals(1, responseObserver.getItems().size());
         Assertions.assertEquals(100, responseObserver.getItems().get(0).getBalance());
@@ -30,7 +28,7 @@ public class Lec02UnaryAsyncClientTest extends AbstractTest {
     @Test
     public void getAllAccountsTest() {
         ResponseObserver<AllAccountsResponse> responseObserver = ResponseObserver.create();
-        this.asyncStub.getAllAccounts(Empty.getDefaultInstance(), responseObserver);
+        this.asyncBankStub.getAllAccounts(Empty.getDefaultInstance(), responseObserver);
         responseObserver.await();
         Assertions.assertEquals(1, responseObserver.getItems().size());
         Assertions.assertEquals(10, responseObserver.getItems().get(0).getAccountsCount());

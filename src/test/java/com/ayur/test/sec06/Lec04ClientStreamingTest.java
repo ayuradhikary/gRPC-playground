@@ -4,14 +4,12 @@ import com.ayur.models.sec06.AccountBalance;
 import com.ayur.models.sec06.DepositRequest;
 import com.ayur.models.sec06.Money;
 import com.ayur.test.common.ResponseObserver;
-import com.google.common.util.concurrent.Uninterruptibles;
 import io.grpc.stub.StreamObserver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 public class Lec04ClientStreamingTest extends AbstractTest {
@@ -21,7 +19,7 @@ public class Lec04ClientStreamingTest extends AbstractTest {
     @Test
     public void depositTest() {
         ResponseObserver<AccountBalance> responseObserver = ResponseObserver.create();
-        StreamObserver<DepositRequest> requestObserver = this.asyncStub.deposit(responseObserver);
+        StreamObserver<DepositRequest> requestObserver = this.asyncBankStub.deposit(responseObserver);
 
         //initial message - account number
         requestObserver.onNext(DepositRequest.newBuilder().setAccountNumber(5).build());

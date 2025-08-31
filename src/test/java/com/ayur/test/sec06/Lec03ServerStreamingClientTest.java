@@ -17,7 +17,7 @@ public class Lec03ServerStreamingClientTest extends AbstractTest {
     @Test
     public void blockingClientWithdrawTest() {
         WithdrawRequest request = WithdrawRequest.newBuilder().setAccountNumber(2).setAmount(20).build();
-        Iterator<Money> iterator = this.blockingStub.withdraw(request);
+        Iterator<Money> iterator = this.bankStub.withdraw(request);
         int count = 0;
         while(iterator.hasNext()) {
             log.info("received money: {}", iterator.next());
@@ -30,7 +30,7 @@ public class Lec03ServerStreamingClientTest extends AbstractTest {
     public void asyncClientWithdrawTest() {
         WithdrawRequest request = WithdrawRequest.newBuilder().setAccountNumber(2).setAmount(20).build();
         ResponseObserver<Money> responseObserver = ResponseObserver.create();
-        this.asyncStub.withdraw(request, responseObserver);
+        this.asyncBankStub.withdraw(request, responseObserver);
         responseObserver.await();
         Assertions.assertEquals(2, responseObserver.getItems().size());
         Assertions.assertEquals(10, responseObserver.getItems().get(0).getAmount());
