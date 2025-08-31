@@ -6,6 +6,7 @@ import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import org.ayur.sec05.V1VersionCompatibility;
 import org.ayur.sec06.repository.AccountRepository;
+import org.ayur.sec06.requestHandlers.DepositRequestHandler;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +63,10 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
         }
 
         responseObserver.onCompleted();
+    }
 
+    @Override
+    public StreamObserver<DepositRequest> deposit(StreamObserver<AccountBalance> responseObserver) {
+        return new DepositRequestHandler(responseObserver);
     }
 }
