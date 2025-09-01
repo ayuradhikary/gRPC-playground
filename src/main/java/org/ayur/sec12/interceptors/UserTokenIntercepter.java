@@ -10,9 +10,10 @@ import java.util.Set;
 
 public class UserTokenIntercepter implements ServerInterceptor {
 
+    private static final Logger log = LoggerFactory.getLogger(UserTokenIntercepter.class);
     private static final Set<String> PRIME_SET = Set.of("user-token-1", "user-token-2");
     private static final Set<String> STANDARD_SET = Set.of("user-token-3", "user-token-4");
-    private static final Logger log = LoggerFactory.getLogger(UserTokenIntercepter.class);
+
 
     @Override
     public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> serverCall, Metadata metadata, ServerCallHandler<ReqT, RespT> serverCallHandler) {

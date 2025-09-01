@@ -1,5 +1,6 @@
 package org.ayur.sec12;
 
+import io.grpc.Context;
 import io.grpc.Metadata;
 
 public class Constants {
@@ -9,5 +10,7 @@ public class Constants {
     public static final Metadata.Key<String> USER_TOKEN_KEY = Metadata.Key.of("Authorizaiton", Metadata.ASCII_STRING_MARSHALLER);
 
     public static final String BEARER = "Bearer ";
+
+    public static final Context.Key<UserRole> USER_ROLE_KEY = Context.key("user-role");
 
 }
