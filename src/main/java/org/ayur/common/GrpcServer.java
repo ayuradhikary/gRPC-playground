@@ -1,12 +1,14 @@
 package org.ayur.common;
 
 import io.grpc.*;
+import org.ayur.sec12.interceptors.GzipResponseInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GrpcServer {
 
@@ -22,8 +24,14 @@ public class GrpcServer {
     }
 
     public static GrpcServer create(int port, BindableService... services) {
-        ServerBuilder<?> builder = ServerBuilder.forPort(port);
-        Arrays.asList(services).forEach(builder::addService);
+        return create(port, builder -> {
+            Arrays.asList(services).forEach(builder::addService);
+        });
+    }
+
+    public static GrpcServer create(int port, Consumer<ServerBuilder<?>> consumer) {
+        var builder = ServerBuilder.forPort(port);
+        consumer.accept(builder);
         return new GrpcServer(builder.build());
     }
 

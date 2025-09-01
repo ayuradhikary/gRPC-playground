@@ -42,7 +42,7 @@ public class Lec03WitForReadyTest extends AbstractChannelTest {
     public void blockingDeadlineTest() {
         log.info("sending the request");
         WithdrawRequest withdrawRequest = WithdrawRequest.newBuilder().setAccountNumber(1).setAmount(50).build();
-        Iterator<Money> iterator = this.bankStub.withWaitForReady().withdraw(withdrawRequest);
+        Iterator<Money> iterator = this.bankStub.withWaitForReady().withDeadline(Deadline.after(15, TimeUnit.SECONDS)).withdraw(withdrawRequest);
         while (iterator.hasNext()) {
             log.info("{}", iterator.next());
         }
