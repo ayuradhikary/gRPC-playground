@@ -1,6 +1,7 @@
 package org.ayur.common;
 
 import io.grpc.*;
+import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
 import org.ayur.sec12.interceptors.GzipResponseInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,9 @@ public class GrpcServer {
         });
     }
 
-    public static GrpcServer create(int port, Consumer<ServerBuilder<?>> consumer) {
+    public static GrpcServer   create(int port, Consumer<NettyServerBuilder> consumer) {
         var builder = ServerBuilder.forPort(port);
-        consumer.accept(builder);
+        consumer.accept((NettyServerBuilder)builder);
         return new GrpcServer(builder.build());
     }
 
